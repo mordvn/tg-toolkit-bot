@@ -39,16 +39,13 @@ docker compose up --build -d
 
 ## Commands
 
-- `/start` - bot status and intro
-- `/help` - full command list
-- `/ids` - `chat_id` + your `user_id` (+ `reply_user_id` if reply)
-- `/get_chat_id` - current chat ID
-- `/get_user_id` - your Telegram user ID
-- `/get_my_id` - alias for `/get_user_id`
-- `/chat_info` - detailed chat/user metadata
-- `/media_id` - `file_id` + `file_unique_id` for attached/replied media
-- `/media_path` - Telegram `file_path` for attached/replied media
-- `/sticker_id` - sticker IDs and sticker set info
+- `/start` — intro
+- `/help` — command list
+- `/chat_info` — `chat_id`, chat type/title, your `user_id`; reply adds replied user
+- `/msg_info` — message metadata: kind, forward, thread, text/location/contact/poll/dice/game/invoice/web_app
+- `/file_info` — `file_id`, `file_unique_id`, `file_path` for photo/video/audio/voice/document/animation/video_note/sticker/paid media
+
+Attach content or reply to any message when using toolkit commands.
 
 ## License
 
