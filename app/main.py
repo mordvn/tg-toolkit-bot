@@ -6,6 +6,16 @@ from aiogram.types import BotCommand, Message
 
 from config import config
 from logger import logger
+from metrics import setup_metrics, shutdown_metrics
+from middleware import (
+    AccessControlMiddleware,
+    ErrorHandlingMiddleware,
+    LoggingMiddleware,
+    MetricsMiddleware,
+    RateLimitMiddleware,
+    TracingMiddleware,
+)
+from tracing import setup_tracing, shutdown_tracing
 
 router = Router(name=__name__)
 
@@ -174,12 +184,25 @@ async def sticker_id(message: Message) -> None:
     )
 
 
+def _register_middlewares(dp: Dispatcher) -> None:
+    dp.update.outer_middleware(ErrorHandlingMiddleware())
+    dp.update.outer_middleware(MetricsMiddleware())
+    dp.update.outer_middleware(TracingMiddleware())
+    dp.update.outer_middleware(LoggingMiddleware())
+    dp.update.outer_middleware(AccessControlMiddleware())
+    dp.update.outer_middleware(RateLimitMiddleware())
+
+
 async def main() -> None:
+    setup_tracing()
+    setup_metrics()
+
     bot = Bot(token=config.TG_BOT_TOKEN)
     dp = Dispatcher()
+    _register_middlewares(dp)
     dp.include_router(router)
 
-    logger.info("Starting bot")
+    logger.info("Starting bot service={}", config.OTEL_SERVICE_NAME)
     await bot.set_my_commands(
         [
             BotCommand(command="start", description="Start bot and show greeting"),
@@ -197,7 +220,12 @@ async def main() -> None:
     )
 
     await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot)
+    try:
+        await dp.start_polling(bot)
+    finally:
+        shutdown_metrics()
+        shutdown_tracing()
+        logger.info("Bot stopped")
 
 
 if __name__ == "__main__":
