@@ -1,6 +1,7 @@
 import asyncio
 
 from aiogram import Bot, Dispatcher, Router
+from aiogram.enums import ParseMode
 from aiogram.filters import Command
 from aiogram.types import BotCommand, Message
 
@@ -57,25 +58,27 @@ def _extract_media(message: Message) -> tuple[str, str, str]:
 @router.message(Command("start"))
 async def start(message: Message) -> None:
     await message.answer(
-        "**Toolkit Bot** ready.\nUse /help to see available technical commands."
+        "<b>Toolkit Bot</b> ready.\nUse /help to see available technical commands.",
+        parse_mode=ParseMode.HTML,
     )
 
 
 @router.message(Command("help"))
 async def help_command(message: Message) -> None:
     await message.answer(
-        "**Toolkit Bot**commands:\n\n"
-        "**IDs**\n"
+        "<b>Toolkit Bot</b> commands:\n\n"
+        "<b>IDs</b>\n"
         "/ids - chat_id + your user_id (+ replied user_id)\n"
         "/get_chat_id - current chat ID\n"
         "/get_user_id - your Telegram user ID\n"
         "/get_my_id - alias for /get_user_id\n\n"
-        "**Chat**\n"
+        "<b>Chat</b>\n"
         "/chat_info - extended chat + user metadata\n\n"
-        "**Media/sticker**\n"
+        "<b>Media/sticker</b>\n"
         "/media_id - file_id + file_unique_id for any media (reply or attach)\n"
         "/media_path - Telegram file_path for any media (reply or attach)\n"
-        "/sticker_id - sticker set + ids (reply or attach)"
+        "/sticker_id - sticker set + ids (reply or attach)",
+        parse_mode=ParseMode.HTML,
     )
 
 
