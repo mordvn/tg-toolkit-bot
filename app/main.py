@@ -57,22 +57,22 @@ def _extract_media(message: Message) -> tuple[str, str, str]:
 @router.message(Command("start"))
 async def start(message: Message) -> None:
     await message.answer(
-        "TG Toolkit Bot ready.\nUse /help to see available technical commands."
+        "**Toolkit Bot** ready.\nUse /help to see available technical commands."
     )
 
 
 @router.message(Command("help"))
 async def help_command(message: Message) -> None:
     await message.answer(
-        "TG Toolkit commands:\n\n"
-        "IDs (most useful)\n"
+        "**Toolkit Bot**commands:\n\n"
+        "**IDs**\n"
         "/ids - chat_id + your user_id (+ replied user_id)\n"
         "/get_chat_id - current chat ID\n"
         "/get_user_id - your Telegram user ID\n"
         "/get_my_id - alias for /get_user_id\n\n"
-        "Chat/user debug\n"
+        "**Chat**\n"
         "/chat_info - extended chat + user metadata\n\n"
-        "Media/sticker tools\n"
+        "**Media/sticker**\n"
         "/media_id - file_id + file_unique_id for any media (reply or attach)\n"
         "/media_path - Telegram file_path for any media (reply or attach)\n"
         "/sticker_id - sticker set + ids (reply or attach)"
@@ -207,15 +207,6 @@ async def main() -> None:
         [
             BotCommand(command="start", description="Start bot and show greeting"),
             BotCommand(command="help", description="Show full command list"),
-            BotCommand(command="ids", description="Show chat_id and user_id"),
-            BotCommand(command="get_chat_id", description="Show current chat ID"),
-            BotCommand(command="get_user_id", description="Show your Telegram user ID"),
-            BotCommand(command="chat_info", description="Show detailed chat metadata"),
-            BotCommand(command="media_id", description="Get file_id from any media"),
-            BotCommand(command="media_path", description="Get Telegram file_path"),
-            BotCommand(
-                command="sticker_id", description="Get sticker IDs and set name"
-            ),
         ]
     )
 
